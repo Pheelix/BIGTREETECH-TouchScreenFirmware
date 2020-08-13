@@ -45,8 +45,8 @@
  *
  */
 #define DEFAULT_LCD_BRIGHTNESS      11  // 11: LCD_100_PERCENT - Brightness value from list
-#define DEFAULT_LCD_IDLE_BRIGHTNESS 2   // 2: LCD_10_PERCENT - Brightness value from list
-#define DEFAULT_LCD_IDLE_TIMER      1   // 1: LCD_DIM_OFF
+#define DEFAULT_LCD_IDLE_BRIGHTNESS 3   // 2: LCD_10_PERCENT - Brightness value from list
+#define DEFAULT_LCD_IDLE_TIMER      4   // 1: LCD_DIM_OFF
 #define LCD_DIM_CUSTOM_SECONDS      600 // Custom value in seconds. Will be used if
                                           // LCD_DIM_CUSTOM_SECONDS is set as idle timer.
 
@@ -62,12 +62,12 @@
  * Options: BLACK, BLUE, BROWN, BRRED, CYAN, GBLUE, GRAY, GREEN, MAGENTA, RED, WHITE, YELLOW
  */
 #define ST7920_BKCOLOR BLACK
-#define ST7920_FNCOLOR YELLOW
+#define ST7920_FNCOLOR BLUE
 
 /**
  *  Text displayed at the top of the TFT in Marlin Mode.
  */
-//#define ST7920_BANNER_TEXT "LCD12864 Simulator"
+#define ST7920_BANNER_TEXT "Marlin Mode"
 
 /**
  * Run Marlin Mode in Fullscreen
@@ -86,7 +86,7 @@
  *
  * *** ONLY SUPPORTED ON TFT24 V1.1, TFT35 V3.0, AND TFT28 V3.0 ***
  */
-//#define CLEAN_MODE_SWITCHING_SUPPORT  // Enable CLEAN MODE SWITCHING SUPPORT
+#define CLEAN_MODE_SWITCHING_SUPPORT  // Enable CLEAN MODE SWITCHING SUPPORT
 
 //===========================================================================
 //========================== Touch Mode Settings ============================
@@ -101,7 +101,7 @@
  *
  * :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000]
  */
-#define BAUDRATE 115200
+#define BAUDRATE 250000
 
 /**
  * Default Touch Mode Language
@@ -125,8 +125,8 @@
  * Note: Test audio output with the G-Code:
  * M300 S<frequency Hz> P<duration ms>
  */
-#define BUZZER_FREQUENCY_DURATION_MS 20 // Default 20
-#define BUZZER_FREQUENCY_HZ 10000       // Default 10000, 20Hz to 60KHz
+#define BUZZER_FREQUENCY_DURATION_MS 0 // Default 20
+#define BUZZER_FREQUENCY_HZ 0       // Default 10000, 20Hz to 60KHz
 #define BUZZER_STOP_LEVEL false
 
 /**
@@ -144,7 +144,7 @@
 
 //                       PLA      PETG       ABS
 #define PREHEAT_BED      {60,      70,       100}
-#define PREHEAT_HOTEND   {200,     250,      230}
+#define PREHEAT_HOTEND   {205,     250,      230}
 
 #define HEAT_MAX_TEMP    {150,    275,       275,       275,       275,       275,       275}    //max temperature can be set
 #define HEAT_SIGN_ID     {"B:",   "T0:",     "T1:",     "T2:",     "T3:",     "T4:",     "T5:"}
