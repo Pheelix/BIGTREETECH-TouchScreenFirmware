@@ -34,7 +34,7 @@
  *
  * Options: [2400: 0, 9600: 1, 19200: 2, 38400: 3, 57600: 4, 115200: 5, 250000: 6, 500000: 7, 1000000: 8]
  */
-#define BAUDRATE 5  // Default: 5
+#define BAUDRATE 6  // Default: 5
 
 /**
  * Default Primary Language (for Touch-Mode only)
@@ -93,10 +93,10 @@
  *          12: DARKBLUE,  13: DARKGREEN,  14: GRAY,    15: DARKGRAY
  */
 #define MARLIN_BKCOLOR 1  // Default: 1
-#define MARLIN_FNCOLOR 0  // Default: 0
+#define MARLIN_FNCOLOR 4  // Default: 0
 
 // Text displayed at the top of the TFT in Marlin Mode
-#define MARLIN_BANNER_TEXT "LCD12864 Emulator"  // Default: "LCD12864 Emulator"
+#define MARLIN_BANNER_TEXT "Marlin Mode"  // Default: "LCD12864 Emulator"
 
 // Show banner text at the top of the TFT in Marlin Mode
 #define MARLIN_SHOW_BANNER true  // To enabled: true | To disabled: false (Default: true)
@@ -117,7 +117,7 @@
  *
  * Options: [0: Disabled, 1: Enabled]
  */
-#define SERIAL_ALWAYS_ON 0  // Default: 0
+#define SERIAL_ALWAYS_ON 1  // Default: 0
 
 /**
  * LCD/Touch Encoder
@@ -287,7 +287,7 @@
 #define AUTO_SAVE_LOAD_BL_VALUE 1  // Default: 1
 
 // PID autotune
-#define PID_CMD {"M303 U1 C8 E0", "M303 U1 C8 E1", "M303 U1 C8 E2", "M303 U1 C8 E3", "M303 U1 C8 E4", "M303 U1 C8 E5", "M303 U1 C8 E-1", ""};
+#define PID_CMD {"M303 E0 C10 S235", "M303 U1 C8 E1", "M303 U1 C8 E2", "M303 U1 C8 E3", "M303 U1 C8 E4", "M303 U1 C8 E5", "M303 E-1 C10 S70", ""};
 #define PID_PROCESS_TIMEOUT (15 * 60000)  // (MilliSeconds, 1 minute = 60000 MilliSeconds)
 
 /**
@@ -340,7 +340,7 @@
  *          3: LED_ORANGE,  4: LED_YELLOW,  5: LED_GREEN,
  *          6: LED_BLUE,    7: LED_INDIGO,  8: LED_VIOLET
 */
-#define STARTUP_KNOB_LED_COLOR 1  // Default: 1
+#define STARTUP_KNOB_LED_COLOR 6  // Default: 1
 
 // Keep the LED state in Marlin Mode
 #define KEEP_KNOB_LED_COLOR_MARLIN_MODE
@@ -365,7 +365,7 @@
  *          3: 30 Seconds,   4: 60 Seconds,     5: 120 Seconds,
  *          6: 300 Seconds,  7: CUSTOM Seconds
  */
-#define DEFAULT_LCD_IDLE_TIMER  0  // Default: 0
+#define DEFAULT_LCD_IDLE_TIMER  4  // Default: 0
 #define LCD_DIM_CUSTOM_SECONDS (10 * 60)  // Custom value in seconds. This will be used if DEFAULT_LCD_IDLE_TIMER
                                           // is set to 7 (CUSTOM Seconds).
 
@@ -378,8 +378,8 @@
  * NOTE: Test audio output with the G-Code:
  *       M300 S<frequency Hz> P<duration MilliSeconds>
  */
-#define BUZZER_FREQUENCY_DURATION_MS     20  // (MilliSeconds) Default: 20
-#define BUZZER_FREQUENCY_HZ           10000  // (Hz) Default: 10000 (20Hz to 60000Hz)
+#define BUZZER_FREQUENCY_DURATION_MS     0  // (MilliSeconds) Default: 20
+#define BUZZER_FREQUENCY_HZ           0  // (Hz) Default: 10000 (20Hz to 60000Hz)
 
 /**
  * Buzzer pin state when buzzer is idle or no sound is playing
@@ -450,7 +450,7 @@
 //===========================================================================
 
 // Power Supply
-#define PS_ON_ACTIVE_HIGH true  // Set 'false' for ATX (1), 'true' for X-Box (2)
+#define PS_ON_ACTIVE_HIGH false  // Set 'false' for ATX (1), 'true' for X-Box (2)
 
 /**
  * Maximum hotend temperature for automatic shutdown after printing
