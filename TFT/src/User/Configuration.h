@@ -36,7 +36,7 @@
  *                P4: [min: 0, max: 9]
  *   Options: [OFF (port disabled): 0, 2400: 1, 9600: 2, 19200: 3, 38400: 4, 57600: 5, 115200: 6, 250000: 7, 500000: 8, 1000000: 9]
  */
-#define PRIMARY_BAUDRATE 6  // Default: 6
+#define PRIMARY_BAUDRATE 7  // Default: 6
 
 /**
  * Emulate M600
@@ -137,7 +137,7 @@
  *
  *   Options: [Marlin Mode: 0, Touch Mode: 1, Blocked Marlin Mode: 2, Blocked Touch Mode: 3]
  */
-#define DEFAULT_LCD_MODE 1  // Default: 1
+#define DEFAULT_LCD_MODE 0  // Default: 1
 
 /**
  * Serial Always ON
@@ -147,7 +147,7 @@
  *
  *   Options: [disable: 0, enable: 1]
  */
-#define SERIAL_ALWAYS_ON 0  // Default: 0
+#define SERIAL_ALWAYS_ON 1  // Default: 0
 
 /**
  * Default Marlin Mode Background & Font Colors
@@ -157,7 +157,7 @@
  *             ORANGE: 8, PURPLE: 9, LIME: 10, BROWN: 11, DARKBLUE: 12, DARKGREEN: 13,    GRAY: 14, DARKGRAY: 15]
  */
 #define MARLIN_BKCOLOR 1  // Marlin Mode background color (Default: 1)
-#define MARLIN_FNCOLOR 0  // Marlin Mode font color (Default: 0)
+#define MARLIN_FNCOLOR 4  // Marlin Mode font color (Default: 0)
 
 /**
  * Marlin Mode Fullscreen Support
@@ -183,7 +183,7 @@
  *
  *   Value range: [min: 3, max: 20 characthers]
  */
-#define MARLIN_BANNER_TEXT "Marlin Mode"  // Default: "Marlin Mode"
+#define MARLIN_BANNER_TEXT "Marlin Mode - Ender 3"  // Default: "Marlin Mode"
 
 //================================================================================
 //========================== Printer / Machine Settings ==========================
@@ -461,7 +461,7 @@
  *
  *   Options: [OFF: 0, 5sec: 1, 10sec: 2, 30sec: 3, 1min: 4, 2min: 5, 5min: 6, CUSTOM: 7]
  */
-#define DEFAULT_LCD_IDLE_TIME 0  // Default: 0
+#define DEFAULT_LCD_IDLE_TIME 4  // Default: 0
 
 // Custom value in seconds. This will be used if DEFAULT_LCD_IDLE_TIME is set to 7 (CUSTOM Seconds)
 #define IDLE_TIME_CUSTOM (10 * 60)
@@ -472,7 +472,7 @@
  *
  *   Options: [OFF: 0, WHITE: 1, RED: 2, ORANGE: 3, YELLOW: 4, GREEN: 5, BLUE: 6, INDIGO: 7, VIOLET: 8]
  */
-#define STARTUP_KNOB_LED_COLOR 1  // Default: 1
+#define STARTUP_KNOB_LED_COLOR 6  // Default: 1
 
 // Keep the LED state in Marlin Mode
 #define KEEP_KNOB_LED_COLOR_MARLIN_MODE
