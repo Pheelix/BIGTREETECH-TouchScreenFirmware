@@ -183,7 +183,7 @@
  *
  *   Value range: [min: 3, max: 20 characthers]
  */
-#define MARLIN_BANNER_TEXT "Marlin Mode - Ender 3"  // Default: "Marlin Mode"
+#define MARLIN_BANNER_TEXT "Marlin Mode - Ender 3 Max"  // Default: "Marlin Mode"
 
 //================================================================================
 //========================== Printer / Machine Settings ==========================
@@ -235,9 +235,9 @@
 #define X_MIN_POS   0
 #define Y_MIN_POS   0
 #define Z_MIN_POS   0
-#define X_MAX_POS 235
-#define Y_MAX_POS 235
-#define Z_MAX_POS 250
+#define X_MAX_POS 300
+#define Y_MAX_POS 300
+#define Z_MAX_POS 400
 
 // Speed/flow rate names displayed in status screen
 #define SPEED_ID {"Sp.", "Fr."}  // (speed, flow rate)
@@ -357,7 +357,7 @@
  *
  *   Options: [disable: 0, enable: 1]
  */
-#define PS_ON_ACTIVE_HIGH 1  // Default: 1 ("0" for ATX (1), "1" for X-Box (2))
+#define PS_ON_ACTIVE_HIGH 0  // Default: 1 ("0" for ATX (1), "1" for X-Box (2))
 
 /**
  * Power Supply Auto Shutdown Temperature
