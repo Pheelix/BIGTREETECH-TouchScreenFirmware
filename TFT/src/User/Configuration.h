@@ -545,11 +545,11 @@
 
 // Start Gcode
 // This gcode will runs before starting a print.
-#define PRINT_START_GCODE "G28 XY R10\n"  // Raise Z 10mm before homing X & Y
+#define PRINT_START_GCODE "G28 XY R10\nM75\n"  // Raise Z 10mm before homing X & Y
 
 // End Gcode
 // This gcode will runs after a print is completed.
-#define PRINT_END_GCODE "G90\nG1 E-4\nG92 E0\nM18\n"  // Switch to absolute positioning, reduce filament pressure by
+#define PRINT_END_GCODE "G90\nG1 E-4\nG92 E0\nM18\nM77\n"  // Switch to absolute positioning, reduce filament pressure by
                                                       // performing small retract, reset extruder position, disable steppers
 
 // Cancel Gcode
