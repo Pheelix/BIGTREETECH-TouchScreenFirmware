@@ -7,7 +7,7 @@ bool modeSwitching = false;
 // change UI mode
 void Mode_Switch(void)
 {
-  int8_t nowMode = infoSettings.mode & 1;  // Marlin mode or Touch mode
+  int8_t nowMode = GET_BIT(infoSettings.mode, 0);  // Marlin mode or Touch mode
   infoMenu.cur = 0;
 
   HW_InitMode(nowMode);
@@ -17,10 +17,14 @@ void Mode_Switch(void)
     case MODE_SERIAL_TSC:
       GUI_RestoreColorDefault();
 
+      // always init the machine settings to restart the temperature polling
+      // process needed by parseAck() function to establish the connection
+      initMachineSettings();
+
       if (infoSettings.status_screen == 1)  // if Status Screen menu is selected
-        infoMenu.menu[infoMenu.cur] = menuStatus;  // status screen as default home screen on boot
+        REPLACE_MENU(menuStatus);  // status screen as default home screen on boot
       else
-        infoMenu.menu[infoMenu.cur] = menuMain;  // classic UI
+        REPLACE_MENU(menuMain);  // classic UI
 
       #ifdef SHOW_BTT_BOOTSCREEN
         if (modeFreshBoot)
@@ -44,10 +48,10 @@ void Mode_Switch(void)
 
     case MODE_MARLIN:
       #ifdef HAS_EMULATOR
-        if (infoSettings.serial_alwaysOn == ENABLED)
+        if (infoSettings.serial_always_on == ENABLED)
           updateNextHeatCheckTime();  // send "M105" after a delay, because of mega2560 will be hanged when received data at startup
 
-        infoMenu.menu[infoMenu.cur] = menuMarlinMode;
+        REPLACE_MENU(menuMarlinMode);
       #endif
       break;
   }
@@ -55,28 +59,27 @@ void Mode_Switch(void)
 
 void Mode_CheckSwitching(void)
 {
-//  #ifndef SERIAL_ALWAYS_ON
-  // IDEALLY I would like to be able to swap even when the TFT is in printing mode
-  // but before I can allow that I need a way to make sure that we swap back into
-  // the right mode (and correct screen) and I really want a reliable way to DETECT
-  // that the TFT should be in printing mode even when the print was started externally.
-  if (isPrinting() || infoHost.printing || modeSwitching)
+  // we must always call Touch_Enc_ReadPen() and LCD_Enc_ReadBtn() first just to always update their internal timers
+  // when an encoder/touch button is pressed or released (avoiding the Mode menu is displayed by mistake when aborting
+  // a print in Marlin mode with infoSettings.serial_always_on enabled)
+  bool btnPressed = Touch_Enc_ReadPen(MODE_SWITCHING_INTERVAL);
+
+  #if LCD_ENCODER_SUPPORT
+    btnPressed |= LCD_Enc_ReadBtn(MODE_SWITCHING_INTERVAL);
+  #endif
+
+  // NOTE: leave this check after Touch_Enc_ReadPen() was called to allow the Smart Home feature to work properly
+  //       when infoSettings.mode is set to a blocked mode
+  if (infoSettings.mode >= MODE_COUNT)  // if blocked mode, then exit
     return;
 
-  if (infoMenu.menu[infoMenu.cur] == menuMode)
+  // do not change mode if printing from any source or is already waiting mode selection
+  if (isPrinting() || isHostPrinting() || modeSwitching)
     return;
-//  #endif
 
-  if (Touch_Enc_ReadPen(MODE_SWITCHING_INTERVAL)
-    #if LCD_ENCODER_SUPPORT
-      || LCD_Enc_ReadBtn(MODE_SWITCHING_INTERVAL)
-    #endif
-    )
-  {
-    // NOTE: leave this check after Touch_Enc_ReadPen() to allow the Smart Home feature to work properly
-    if (infoSettings.mode >= MODE_COUNT)  // if blocked mode, then exit
-      return;
+  if (MENU_IS(menuMode))
+    return;
 
-    infoMenu.menu[++infoMenu.cur] = menuMode;
-  }
+  if (btnPressed)
+    OPEN_MENU(menuMode);
 }

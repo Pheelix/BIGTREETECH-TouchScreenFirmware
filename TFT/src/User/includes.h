@@ -1,7 +1,9 @@
 #ifndef _INCLUDES_H_
 #define _INCLUDES_H_
 
+// global includes (always first)
 #include "variants.h"
+#include "main.h"
 
 // standard libs
 #include <stdarg.h>
@@ -9,6 +11,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+// User
+#include "delay.h"
+#include "my_misc.h"
+#include "os_timer.h"
+#include "SanityCheck.h"
 
 // User/HAL/stm32f10x or // HAL/stm32f2_f4xx
 #include "lcd_dma.h"
@@ -38,15 +46,11 @@
 #include "ff.h"
 #include "myfatfs.h"
 
-// User/API/Vfs
-#include "Vfs/vfs.h"
-
-// User/API/printf
-#include "printf/printf.h"
-
-// User/API/Gcode
+// User/API
 #include "Gcode/gcode.h"
 #include "Gcode/mygcodefs.h"
+#include "printf/printf.h"
+#include "Vfs/vfs.h"
 
 // User/API/Language
 #include "Language.h"
@@ -64,6 +68,7 @@
 #include "ui_draw.h"
 
 // User/API
+#include "AddonHardware.h"
 #include "BabystepControl.h"
 #include "boot.h"
 #include "BuzzerControl.h"
@@ -80,6 +85,7 @@
 #include "LCD_Colors.h"
 #include "LCD_Dimming.h"
 #include "LED_Colors.h"
+#include "LED_Event.h"
 #include "LevelingControl.h"
 #include "MachineParameters.h"
 #include "menu.h"
@@ -94,7 +100,6 @@
 #include "ScreenShot.h"
 #include "SerialConnection.h"
 #include "Settings.h"
-#include "SmartFeatures.h"
 #include "SpeedControl.h"
 #include "Temperature.h"
 #include "Touch_Encoder.h"
@@ -129,6 +134,7 @@
 #include "NotificationMenu.h"
 #include "ParameterSettings.h"
 #include "PersistentInfo.h"
+#include "MPC.h"
 #include "Pid.h"
 #include "Popup.h"
 #include "PreheatMenu.h"
@@ -148,41 +154,5 @@
 #include "UnifiedHeat.h"
 #include "UnifiedMove.h"
 #include "ZOffset.h"
-
-// User
-#include "delay.h"
-#include "my_misc.h"
-#include "os_timer.h"
-#include "SanityCheck.h"
-
-#define MAX_MENU_DEPTH 10       // max sub menu depth
-typedef void (*FP_MENU)(void);
-
-typedef struct
-{
-  FP_MENU menu[MAX_MENU_DEPTH];  // Menu function buffer
-  uint8_t cur;                   // Current menu index in buffer
-} MENU;
-
-extern MENU infoMenu;
-
-typedef struct
-{
-  bool wait;              //Whether wait for Marlin's response
-  bool rx_ok[_UART_CNT];  //Whether receive Marlin's response or get Gcode by other UART(ESP3D/OctoPrint)
-  bool connected;         //Whether have connected to Marlin
-  bool printing;          //Whether the host is busy in printing execution. (USB serial printing and GCODE print from onboard)
-} HOST;
-
-extern HOST infoHost;
-
-typedef struct
-{
-  RCC_ClocksTypeDef rccClocks;
-  uint32_t PCLK1_Timer_Frequency;
-  uint32_t PCLK2_Timer_Frequency;
-} CLOCKS;
-
-extern CLOCKS mcuClocks;
 
 #endif

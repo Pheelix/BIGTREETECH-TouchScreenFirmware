@@ -9,12 +9,12 @@ void menuBedLevelingLayer2(void)
     // icon                          label
     {
       {ICON_LEVELING,                LABEL_START},
-      {ICON_BACKGROUND,              LABEL_BACKGROUND},
-      {ICON_BACKGROUND,              LABEL_BACKGROUND},
-      {ICON_BACKGROUND,              LABEL_BACKGROUND},
-      {ICON_BACKGROUND,              LABEL_BACKGROUND},
-      {ICON_BACKGROUND,              LABEL_BACKGROUND},
-      {ICON_BACKGROUND,              LABEL_BACKGROUND},
+      {ICON_NULL,                    LABEL_NULL},
+      {ICON_NULL,                    LABEL_NULL},
+      {ICON_NULL,                    LABEL_NULL},
+      {ICON_NULL,                    LABEL_NULL},
+      {ICON_NULL,                    LABEL_NULL},
+      {ICON_NULL,                    LABEL_NULL},
       {ICON_BACK,                    LABEL_BACK},
     }
   };
@@ -37,6 +37,7 @@ void menuBedLevelingLayer2(void)
 
     case BL_MBL:
       bedLevelingLayer2Items.title.index = LABEL_MBL_SETTINGS;
+      break;
 
     default:
       break;
@@ -69,7 +70,7 @@ void menuBedLevelingLayer2(void)
 
   menuDrawPage(&bedLevelingLayer2Items);
 
-  while (infoMenu.menu[infoMenu.cur] == menuBedLevelingLayer2)
+  while (MENU_IS(menuBedLevelingLayer2))
   {
     key_num = menuKeyGetValue();
     switch (key_num)
@@ -86,7 +87,7 @@ void menuBedLevelingLayer2(void)
         }
         else  // if MBL
         {
-          infoMenu.menu[++infoMenu.cur] = menuMBL;
+          OPEN_MENU(menuMBL);
         }
         break;
 
@@ -103,7 +104,7 @@ void menuBedLevelingLayer2(void)
       case KEY_ICON_3:
         #if DELTA_PROBE_TYPE != 2  // if not removable probe
           if (infoMachineSettings.zProbe == ENABLED)
-            infoMenu.menu[++infoMenu.cur] = menuLevelCorner;
+            OPEN_MENU(menuLevelCorner);
         #endif
         break;
 
@@ -112,9 +113,9 @@ void menuBedLevelingLayer2(void)
           if (infoMachineSettings.zProbe == ENABLED)
           {
             if (infoSettings.touchmi_sensor != 0)
-              infoMenu.menu[++infoMenu.cur] = menuTouchMi;
+              OPEN_MENU(menuTouchMi);
             else
-              infoMenu.menu[++infoMenu.cur] = menuBLTouch;
+              OPEN_MENU(menuBLTouch);
           }
         #endif
         break;
@@ -128,7 +129,7 @@ void menuBedLevelingLayer2(void)
         break;
 
       case KEY_ICON_7:
-        infoMenu.cur--;
+        CLOSE_MENU();
         break;
 
       default:

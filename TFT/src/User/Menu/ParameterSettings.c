@@ -18,10 +18,13 @@ const LABEL parameterTypes[PARAMETERS_COUNT] = {
   LABEL_FWRECOVER,
   LABEL_RETRACT_AUTO,
   LABEL_HOTEND_OFFSET,
+  LABEL_HOTEND_PID,
+  LABEL_BED_PID,
   LABEL_ABL,
   LABEL_STEALTH_CHOP,
   LABEL_DELTA_CONFIGURATION,
   LABEL_DELTA_TOWER_ANGLE,
+  LABEL_DELTA_DIAGONAL_ROD,
   LABEL_DELTA_ENDSTOP,
   LABEL_PROBE_OFFSET,
   LABEL_LIN_ADVANCE,
@@ -33,9 +36,9 @@ const LABEL parameterTypes[PARAMETERS_COUNT] = {
 
 const LISTITEM eepromItems[P_SETTINGS_COUNT] = {
 // icon            ItemType    Item Title              item value text(only for custom value)
-  {CHARICON_SAVE,  LIST_LABEL, LABEL_SETTINGS_SAVE,    LABEL_BACKGROUND},
-  {CHARICON_UNDO,  LIST_LABEL, LABEL_SETTINGS_RESTORE, LABEL_BACKGROUND},
-  {CHARICON_RESET, LIST_LABEL, LABEL_SETTINGS_RESET,   LABEL_BACKGROUND},
+  {CHARICON_SAVE,  LIST_LABEL, LABEL_SETTINGS_SAVE,    LABEL_NULL},
+  {CHARICON_UNDO,  LIST_LABEL, LABEL_SETTINGS_RESTORE, LABEL_NULL},
+  {CHARICON_RESET, LIST_LABEL, LABEL_SETTINGS_RESET,   LABEL_NULL},
 };
 
 // Load elements for selected parameter
@@ -73,6 +76,14 @@ void loadElements(LISTITEM * parameterMainItem, uint16_t index, uint8_t itemPos)
           parameterMainItem->titlelabel = junctionDeviationDisplayID[elementIndex];
           break;
 
+        case P_HOTEND_PID:
+          parameterMainItem->titlelabel.address = hotendPidDisplayID[elementIndex];
+          break;
+
+        case P_BED_PID:
+          parameterMainItem->titlelabel.address = bedPidDisplayID[elementIndex];
+          break;
+
         case P_FWRETRACT:
           parameterMainItem->titlelabel = retractDisplayID[elementIndex];
           break;
@@ -82,7 +93,7 @@ void loadElements(LISTITEM * parameterMainItem, uint16_t index, uint8_t itemPos)
           break;
 
         case P_AUTO_RETRACT:
-          parameterMainItem->titlelabel = autoRetractDisplayID[elementIndex];
+          parameterMainItem->titlelabel.address = autoRetractDisplayID[elementIndex];
           break;
 
         case P_ABL_STATE:
@@ -99,6 +110,10 @@ void loadElements(LISTITEM * parameterMainItem, uint16_t index, uint8_t itemPos)
 
         case P_DELTA_TOWER_ANGLE:
           parameterMainItem->titlelabel.address = deltaTowerAngleDisplayID[elementIndex];
+          break;
+
+        case P_DELTA_DIAGONAL_ROD:
+          parameterMainItem->titlelabel.address = deltaDiagonalRodDisplayID[elementIndex];
           break;
 
         case P_DELTA_ENDSTOP:
@@ -125,12 +140,12 @@ void loadElements(LISTITEM * parameterMainItem, uint16_t index, uint8_t itemPos)
     }
     else
     {
-      parameterMainItem->icon = CHARICON_BACKGROUND;
+      parameterMainItem->icon = CHARICON_NULL;
     }
   }
   else
   {
-    parameterMainItem->icon = CHARICON_BACKGROUND;
+    parameterMainItem->icon = CHARICON_NULL;
   }
 }
 
@@ -149,7 +164,7 @@ void menuShowParameter(void)
 
   listViewCreate(parameterTypes[curParameter], NULL, enabledElementCount, NULL, false, NULL, loadElements);
 
-  while (infoMenu.menu[infoMenu.cur] == menuShowParameter)
+  while (MENU_IS(menuShowParameter))
   {
     curIndex = listViewGetSelectedIndex();
 
@@ -160,7 +175,7 @@ void menuShowParameter(void)
         {
           parametersChanged = true;
         }
-        infoMenu.cur--;
+        CLOSE_MENU();
         break;
 
       default:
@@ -220,7 +235,7 @@ void loadParameters(LISTITEM * parameterMainItem, uint16_t index, uint8_t itemPo
     }
     else
     {
-      parameterMainItem->icon = CHARICON_BACKGROUND;
+      parameterMainItem->icon = CHARICON_NULL;
     }
   }
   else
@@ -228,7 +243,7 @@ void loadParameters(LISTITEM * parameterMainItem, uint16_t index, uint8_t itemPo
     if (infoMachineSettings.EEPROM == 1 && index < totalItems)
       *parameterMainItem = eepromItems[(index - enabledParameterCount)];
     else
-      parameterMainItem->icon = CHARICON_BACKGROUND;
+      parameterMainItem->icon = CHARICON_NULL;
   }
 }
 
@@ -242,7 +257,7 @@ void menuParameterSettings(void)
 
   listViewCreate(title, NULL, totalItems, &psCurPage, false, NULL, loadParameters);
 
-  while (infoMenu.menu[infoMenu.cur] == menuParameterSettings)
+  while (MENU_IS(menuParameterSettings))
   {
     curIndex = listViewGetSelectedIndex();
 
@@ -258,8 +273,9 @@ void menuParameterSettings(void)
         else
         {
           psCurPage = 0;
-          infoMenu.cur--;
         }
+
+        CLOSE_MENU();
         break;
 
       default:
@@ -270,7 +286,7 @@ void menuParameterSettings(void)
           if (curParameter < PARAMETERS_COUNT)
           {
             mustStoreCmd("M503 S0\n");
-            infoMenu.menu[++infoMenu.cur] = menuShowParameter;
+            OPEN_MENU(menuShowParameter);
           }
           break;
         }

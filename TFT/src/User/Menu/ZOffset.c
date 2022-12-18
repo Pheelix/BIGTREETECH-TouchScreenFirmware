@@ -29,15 +29,17 @@ void zOffsetDraw(bool status, float val)
   {
     sprintf(tempstr, "%-15s", textSelect(itemToggle[status].index));
     sprintf(tempstr3, "%-15s", "");
-    GUI_SetColor(infoSettings.reminder_color);
     sprintf(tempstr2, "  %.2f  ", val);
+
+    GUI_SetColor(infoSettings.reminder_color);
   }
   else
   {
     sprintf(tempstr, "ZO:%.2f  ", val);
     sprintf(tempstr3, "Shim:%.3f", infoSettings.level_z_pos);
-    GUI_SetColor(infoSettings.sd_reminder_color);
     sprintf(tempstr2, "  %.2f  ", val + infoSettings.level_z_pos);
+
+    GUI_SetColor(infoSettings.status_color);
   }
 
   GUI_DispString(exhibitRect.x0, exhibitRect.y0, (uint8_t *) tempstr);
@@ -75,8 +77,8 @@ void menuZOffset(void)
       #else
         {ICON_DEC,                     LABEL_DEC},
       #endif
-      {ICON_BACKGROUND,              LABEL_BACKGROUND},
-      {ICON_BACKGROUND,              LABEL_BACKGROUND},
+      {ICON_NULL,                    LABEL_NULL},
+      {ICON_NULL,                    LABEL_NULL},
       #ifdef FRIENDLY_Z_OFFSET_LANGUAGE
         {ICON_NOZZLE_UP,               LABEL_UP},
       #else
@@ -92,7 +94,7 @@ void menuZOffset(void)
   KEY_VALUES key_num = KEY_IDLE;
   float now, z_offset;
   float unit;
-  void (* offsetEnable)(bool, float);          // enable Z offset
+  void (* offsetEnable)(float);                // enable Z offset
   void (* offsetDisable)(void);                // disable Z offset
   bool (* offsetGetStatus)(void);              // get current status
   float (* offsetGetValue)(void);              // get current Z offset
@@ -131,21 +133,17 @@ void menuZOffset(void)
   menuDrawPage(&zOffsetItems);
   zOffsetDraw(offsetGetStatus(), now);
 
-  #if LCD_ENCODER_SUPPORT
-    encoderPosition = 0;
-  #endif
-
-  while (infoMenu.menu[infoMenu.cur] == menuZOffset)
+  while (MENU_IS(menuZOffset))
   {
     unit = moveLenSteps[curUnit_index];
-
     z_offset = offsetGetValue();  // always load current Z offset
-
     key_num = menuKeyGetValue();
+
     switch (key_num)
     {
       // decrease Z offset
       case KEY_ICON_0:
+      case KEY_DECREASE:
         if (!offsetGetStatus())
           zOffsetNotifyError(false);
         else
@@ -156,11 +154,12 @@ void menuZOffset(void)
         if (offsetGetStatus())
           zOffsetNotifyError(true);
         else
-          infoMenu.menu[++infoMenu.cur] = menuUnifiedHeat;
+          OPEN_MENU(menuUnifiedHeat);
         break;
 
       // increase Z offset
       case KEY_ICON_3:
+      case KEY_INCREASE:
         if (!offsetGetStatus())
           zOffsetNotifyError(false);
         else
@@ -170,7 +169,7 @@ void menuZOffset(void)
       // enable/disable Z offset change
       case KEY_ICON_4:
         if (!offsetGetStatus())
-          offsetEnable(true, infoSettings.level_z_pos);
+          offsetEnable(infoSettings.level_z_pos);
         else
           offsetDisable();
 
@@ -235,21 +234,10 @@ void menuZOffset(void)
         if (offsetGetStatus())
           offsetDisable();
 
-        infoMenu.cur--;
+        CLOSE_MENU();
         break;
 
       default:
-        #if LCD_ENCODER_SUPPORT
-          if (encoderPosition)
-          {
-            if (!offsetGetStatus())
-              zOffsetNotifyError(false);
-            else
-              z_offset = offsetUpdateValue(unit, encoderPosition < 0 ? -1 : 1);
-
-            encoderPosition = 0;
-          }
-        #endif
         break;
     }
 

@@ -3,7 +3,7 @@
 
 #define ITEM_TUNE_EXTRUDER_LEN_NUM 4
 
-#define EXTRUDE_LEN 100.0f // in MM
+#define EXTRUDE_LEN 100.0f  // in MM
 
 static uint8_t tool_index = NOZZLE0;
 static uint8_t degreeSteps_index = 1;
@@ -13,18 +13,18 @@ static bool loadRequested = false;
 // set the hotend to the minimum extrusion temperature if user selected "OK"
 void extrudeMinTemp_OK(void)
 {
-  heatSetTargetTemp(tool_index, infoSettings.min_ext_temp);
+  heatSetTargetTemp(tool_index, infoSettings.min_ext_temp, FROM_GUI);
 }
 
 static inline void turnHeaterOff(void)
 {
-  heatSetTargetTemp(tool_index, 0);
-  infoMenu.cur--;
+  heatSetTargetTemp(tool_index, 0, FROM_GUI);
+  CLOSE_MENU();
 }
 
 static inline void returnToTuning(void)
 {
-  infoMenu.cur--;
+  CLOSE_MENU();
 }
 
 void showNewESteps(const float measured_length, const float old_esteps, float * new_esteps)
@@ -50,16 +50,24 @@ static inline void extrudeFilament(void)
 {
   // Home extruder
   mustStoreScript("G28\nG90\n");
+
+  if (tool_index != heatGetCurrentTool())
+    storeCmd("%s\n", tool_change[tool_index]);
+
   // Raise Z axis to pause height
-  mustStoreCmd("G0 Z%.3f F%d\n", coordinateGetAxisActual(Z_AXIS) + infoSettings.pause_z_raise,
-                  infoSettings.pause_feedrate[FEEDRATE_Z]);
+  #if DELTA_PROBE_TYPE != 0
+    mustStoreCmd("G0 Z200 F%d\n", infoSettings.pause_feedrate[FEEDRATE_Z]);
+  #else
+    mustStoreCmd("G0 Z%.3f F%d\n", coordinateGetAxisActual(Z_AXIS) + infoSettings.pause_z_raise,
+                 infoSettings.pause_feedrate[FEEDRATE_Z]);
+  #endif
   // Move to pause location
   mustStoreCmd("G0 X%.3f Y%.3f F%d\n", infoSettings.pause_pos[X_AXIS], infoSettings.pause_pos[Y_AXIS],
-                  infoSettings.pause_feedrate[FEEDRATE_XY]);
+               infoSettings.pause_feedrate[FEEDRATE_XY]);
   // extrude 100MM
-  mustStoreScript("M83\nG1 F50 E%.2f\nM82\n", EXTRUDE_LEN);
+  mustStoreScript("M83\nG1 F100 E%.2f\nM82\n", EXTRUDE_LEN);
 
-  infoMenu.menu[++infoMenu.cur] = menuNewExtruderESteps;
+  OPEN_MENU(menuNewExtruderESteps);
 }
 // end Esteps part
 
@@ -71,8 +79,8 @@ void menuTuneExtruder(void)
     // icon                          label
     {
       {ICON_DEC,                     LABEL_DEC},
-      {ICON_BACKGROUND,              LABEL_BACKGROUND},
-      {ICON_BACKGROUND,              LABEL_BACKGROUND},
+      {ICON_NULL,                    LABEL_NULL},
+      {ICON_NULL,                    LABEL_NULL},
       {ICON_INC,                     LABEL_INC},
       {ICON_NOZZLE,                  LABEL_NOZZLE},
       {ICON_5_DEGREE,                LABEL_5_DEGREE},
@@ -94,20 +102,17 @@ void menuTuneExtruder(void)
   menuDrawPage(&tuneExtruderItems);
   temperatureReDraw(tool_index, NULL, false);
 
-  #if LCD_ENCODER_SUPPORT
-    encoderPosition = 0;
-  #endif
-
-  while (infoMenu.menu[infoMenu.cur] == menuTuneExtruder)
+  while (MENU_IS(menuTuneExtruder))
   {
     actCurrent = heatGetCurrentTemp(tool_index);
     actTarget = heatGetTargetTemp(tool_index);
-
     key_num = menuKeyGetValue();
+
     switch (key_num)
     {
       case KEY_ICON_0:
-        heatSetTargetTemp(tool_index, actTarget - degreeSteps[degreeSteps_index]);
+      case KEY_DECREASE:
+        heatSetTargetTemp(tool_index, actTarget - degreeSteps[degreeSteps_index], FROM_GUI);
         break;
 
       case KEY_INFOBOX:
@@ -115,19 +120,19 @@ void menuTuneExtruder(void)
         int16_t val = editIntValue(0, infoSettings.max_temp[tool_index], 0, actTarget);
 
         if (val != actTarget)
-          heatSetTargetTemp(tool_index, val);
+          heatSetTargetTemp(tool_index, val, FROM_GUI);
 
-        menuDrawPage(&tuneExtruderItems);
         temperatureReDraw(tool_index, NULL, false);
         break;
       }
 
       case KEY_ICON_3:
-        heatSetTargetTemp(tool_index, actTarget + degreeSteps[degreeSteps_index]);
+      case KEY_INCREASE:
+        heatSetTargetTemp(tool_index, actTarget + degreeSteps[degreeSteps_index], FROM_GUI);
         break;
 
       case KEY_ICON_4:
-        tool_index = (tool_index + 1) % infoSettings.hotend_count;
+        tool_index = (tool_index + 1) % infoSettings.ext_count;
 
         temperatureReDraw(tool_index, NULL, false);
         break;
@@ -151,18 +156,11 @@ void menuTuneExtruder(void)
         }
         else
         {
-          infoMenu.cur--;
+          CLOSE_MENU();
         }
         break;
 
-      default :
-        #if LCD_ENCODER_SUPPORT
-          if (encoderPosition)
-          {
-            heatSetTargetTemp(tool_index, actTarget + degreeSteps[degreeSteps_index] * encoderPosition);
-            encoderPosition = 0;
-          }
-        #endif
+      default:
         break;
     }
 
@@ -218,8 +216,8 @@ void menuNewExtruderESteps(void)
     // icon                          label
     {
       {ICON_DEC,                     LABEL_DEC},
-      {ICON_BACKGROUND,              LABEL_BACKGROUND},
-      {ICON_BACKGROUND,              LABEL_BACKGROUND},
+      {ICON_NULL,                    LABEL_NULL},
+      {ICON_NULL,                    LABEL_NULL},
       {ICON_INC,                     LABEL_INC},
       {ICON_EEPROM_SAVE,             LABEL_SAVE},
       {ICON_1_MM,                    LABEL_1_MM},
@@ -242,20 +240,19 @@ void menuNewExtruderESteps(void)
   menuDrawPage(&newExtruderESteps);
   showNewESteps(measured_length, old_esteps, &new_esteps);
 
-  #if LCD_ENCODER_SUPPORT
-    encoderPosition = 0;
-  #endif
-
-  while (infoMenu.menu[infoMenu.cur] == menuNewExtruderESteps)
+  while (MENU_IS(menuNewExtruderESteps))
   {
     key_num = menuKeyGetValue();
+
     switch (key_num)
     {
       case KEY_ICON_0:
+      case KEY_DECREASE:
         measured_length -= moveLenSteps[extStep_index];
         break;
 
       case KEY_ICON_3:
+      case KEY_INCREASE:
         measured_length += moveLenSteps[extStep_index];
         break;
 
@@ -282,17 +279,10 @@ void menuNewExtruderESteps(void)
         break;
 
       case KEY_ICON_7:
-        infoMenu.cur--;
+        CLOSE_MENU();
         break;
 
-      default :
-        #if LCD_ENCODER_SUPPORT
-          if (encoderPosition)
-          {
-            measured_length += moveLenSteps[extStep_index] * encoderPosition;
-            encoderPosition = 0;
-          }
-        #endif
+      default:
         break;
     }
 
