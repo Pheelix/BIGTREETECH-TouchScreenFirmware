@@ -211,7 +211,7 @@
  * Show persistent temperature info in all menus.
  *   Options: [disable: 0, enable: 1]
  */
-#define PERSISTENT_INFO 0  // Default: 0
+#define PERSISTENT_INFO 1  // Default: 0
 
 /**
  * Temperature And Wait ACK In Terminal
@@ -267,7 +267,7 @@
  *
  *   Options: [Percentage & Elapsed time: 0, Percentage & Remaining time: 1, Elapsed time & Remaining time: 2]
  */
-#define PROG_DISP_TYPE 2  // Default: 2
+#define PROG_DISP_TYPE 1  // Default: 2
 
 /**
  * Current Layer Display Mode During Print
@@ -293,7 +293,7 @@
  *
  *   Options: [Layer height: 0, Layer number: 1, Both - height & number: 2]
  */
-#define LAYER_DISP_TYPE 0  // Default: 0
+#define LAYER_DISP_TYPE 2  // Default: 0
 
 //================================================================================
 //============================= Marlin Mode Settings =============================
@@ -418,7 +418,7 @@
  *                bed:     [min: 20, max: 400]
  *                chamber: [min: 20, max: 200]
  */
-#define MAX_TEMP {300, 275, 275, 275, 275, 275, 150, 80}  // Default: {275, 275, 275, 275, 275, 275, 150, 60}
+#define MAX_TEMP {300, 275, 275, 275, 275, 275, 150, 60}  // Default: {275, 275, 275, 275, 275, 275, 150, 60}
 
 /**
  * Cold Extrusion Minimum Temperature
@@ -838,10 +838,10 @@
  *
  *   Options: [disable: 0, enable: 1]
  */
-#define TOUCH_SOUND  1  // Default: 1
-#define TOAST_SOUND  1  // Default: 1
+#define TOUCH_SOUND  0  // Default: 1
+#define TOAST_SOUND  0  // Default: 1
 #define ALERT_SOUND  1  // Default: 1
-#define HEATER_SOUND 1  // Default: 1
+#define HEATER_SOUND 0  // Default: 1
 
 /**
  * LCD Brightness Levels (only for TFT28/TFT35/TFT43/TFT50/TFT70 V3.0)
@@ -857,7 +857,7 @@
  * period of the LCD idle time.
  *   Options: [OFF: 0, 5sec: 1, 10sec: 2, 30sec: 3, 1min: 4, 2min: 5, 5min: 6, 10min: 7]
  */
-#define LCD_IDLE_TIME 0  // Default: 0
+#define LCD_IDLE_TIME 4  // Default: 0
 
 // Custom value in seconds. This will be used if LCD_IDLE_TIME is set to 7 (CUSTOM Seconds)
 #define IDLE_TIME_CUSTOM (10 * 60)  // Default: 10 * 60
