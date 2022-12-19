@@ -408,7 +408,7 @@
  * firmware supports controller fan (M710).
  *   Options: [disable: 0, enable: 1]
  */
-#define CONTROLLER_FAN 0  // Default: 0
+#define CONTROLLER_FAN 1  // Default: 0
 
 /**
  * Bed / Extruder / Chamber Maximum Temperatures
@@ -418,7 +418,7 @@
  *                bed:     [min: 20, max: 400]
  *                chamber: [min: 20, max: 200]
  */
-#define MAX_TEMP {275, 275, 275, 275, 275, 275, 150, 60}  // Default: {275, 275, 275, 275, 275, 275, 150, 60}
+#define MAX_TEMP {300, 275, 275, 275, 275, 275, 150, 80}  // Default: {275, 275, 275, 275, 275, 275, 150, 60}
 
 /**
  * Cold Extrusion Minimum Temperature
@@ -452,9 +452,9 @@
 #define X_MIN_POS   0  // Default: 0
 #define Y_MIN_POS   0  // Default: 0
 #define Z_MIN_POS   0  // Default: 0
-#define X_MAX_POS 235  // Default: 235
-#define Y_MAX_POS 235  // Default: 235
-#define Z_MAX_POS 250  // Default: 250
+#define X_MAX_POS 300  // Default: 235
+#define Y_MAX_POS 300  // Default: 235
+#define Z_MAX_POS 340  // Default: 250
 
 /**
  * X & Y Move Speeds/Feedrates
@@ -605,7 +605,7 @@
  *   Unit: [feedrate in mm/min]
  *   Value range: [min: 10, max: 12000]
  */
-#define LEVELING_EDGE_DISTANCE    20  // (mm) Inset distance from bed's edge for calculating leveling point location (Default: 20)
+#define LEVELING_EDGE_DISTANCE    40  // (mm) Inset distance from bed's edge for calculating leveling point location (Default: 20)
 #define LEVELING_Z_POS          0.2f  // (mm) Z-axis position when nozzle stays for leveling (Default: 0.2f)
 #define LEVELING_Z_RAISE       10.0f  // (mm) Z-axis position when nozzle move to next point (Default: 10.0f)
 #define LEVELING_XY_FEEDRATE    6000  // (mm/min) X and Y axes move feedrate (Default: 6000)
@@ -672,7 +672,7 @@
  *
  *   Options: [disable: 0, enable: 1]
  */
-#define Z_STEPPER_ALIGNEMENT 0  // Default: 0
+#define Z_STEPPER_ALIGNEMENT 1  // Default: 0
 
 /**
  * TouchMI Settings (ABL)
@@ -692,7 +692,7 @@
  */
 #define PREHEAT_LABELS {"PLA", "PETG", "ABS", "WOOD", "TPU", "NYLON"}  // Default: {"PLA", "PETG", "ABS", "WOOD", "TPU", "NYLON"}
 #define PREHEAT_HOTEND {200,   240,    230,   170,    220,   250}      // Default: {200,   240,    230,   170,    220,   250}
-#define PREHEAT_BED    { 60,    70,     90,    50,     50,    90}      // Default: { 60,    70,     90,    50,     50,    90}
+#define PREHEAT_BED    { 70,    70,     90,    50,     50,    90}      // Default: { 60,    70,     90,    50,     50,    90}
 
 //================================================================================
 //============================ Power Supply Settings =============================
@@ -744,7 +744,7 @@
  * Select the type of filament runout sensor and its default enabled/disabled state.
  *   Options: [Normal Disabled: 0, Normal Enabled: 1, Smart Disabled: 2, Smart Enabled: 3]
  */
-#define FIL_RUNOUT 0  // Default: 0
+#define FIL_RUNOUT 1  // Default: 0
 
 /**
  * Inverted Filament Runout Sensor Logic
@@ -794,7 +794,7 @@
  * Disable to reduce the loss of TFT SD card or TFT USB disk.
  *   Options: [disable: 0, enable: 1]
  */
-#define PL_RECOVERY 1  // Default: 1
+#define PL_RECOVERY 0  // Default: 1
 
 /**
  * Power Loss Recovery Homing
@@ -849,7 +849,7 @@
  *   Options: [OFF: 0, 5%: 1, 10%: 2, 20%: 3, 30%: 4, 40%: 5, 50%: 6, 60%: 7, 70%: 8, 80%: 9, 90%: 10, 100%: 11]
  */
 #define LCD_BRIGHTNESS      11  // LCD brightness level (Default: 11)
-#define LCD_IDLE_BRIGHTNESS  5  // LCD brightness level when device is idle (Default: 5)
+#define LCD_IDLE_BRIGHTNESS  3  // LCD brightness level when device is idle (Default: 5)
 
 /**
  * LCD Idle Time (only for TFT28/TFT35/TFT43/TFT50/TFT70 V3.0)
@@ -917,7 +917,7 @@
  * If enabled, when the LCD is idle (dimmed) then the knob LED will be also switched off.
  *   Options: [disable: 0, enable: 1]
  */
-#define KNOB_LED_IDLE 1  // Default: 1
+#define KNOB_LED_IDLE 0  // Default: 1
 
 /**
  * Knob LED Pixels (only for TFT28/TFT35_E3/TFT43/TFT50/TFT70 V3.0)
@@ -1074,7 +1074,7 @@
 //================================================================================
 
 // PID autotune
-#define PID_CMD_MARLIN      {"M303 E0 C8 U1", "M303 E1 C8 U1", "M303 E2 C8 U1", "M303 E3 C8 U1", "M303 E4 C8 U1", "M303 E5 C8 U1", "M303 E-1 C8 U1", ""}
+#define PID_CMD_MARLIN      {"M303 E0 C10 U1", "M303 E1 C8 U1", "M303 E2 C8 U1", "M303 E3 C8 U1", "M303 E4 C8 U1", "M303 E5 C8 U1", "M303 E-1 C10 U1", ""}
 #define PID_CMD_RRF         {"M303 T0",       "M303 T1",       "M303 T2",       "M303 T3",       "M303 T4",       "M303 T5",       "M303 H0",        ""}
 #define PID_PROCESS_TIMEOUT (15 * 60000)  // Timeout in MilliSeconds (1 minute = 60000 MilliSeconds). Default: 15 * 60000
 
