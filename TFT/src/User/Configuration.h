@@ -376,7 +376,7 @@
  *
  *   Options: [File mode: 0, Time mode: 1]
  */
-#define PROG_SOURCE 0
+#define PROG_SOURCE 1
 
 /**
  * Progress Numeric Display Mode During Print
@@ -391,7 +391,7 @@
  *
  *   Options: [Percentage & Elapsed time: 0, Percentage & Remaining time: 1, Elapsed time & Remaining time: 2]
  */
-#define PROG_DISP_TYPE 1  // Default: 2
+#define PROG_DISP_TYPE 2  // Default: 2
 
 /**
  * Current Layer Display Mode During Print
@@ -478,7 +478,7 @@
  * Banner text displayed at the top of the TFT in Marlin Mode.
  *   Value range: [min: 3, max: 20 characters]
  */
-#define MARLIN_TITLE "Marlin Mode - Ender 3 Max"  // Default: "Marlin Mode"
+#define MARLIN_TITLE "Marlin Mode"  // Default: "Marlin Mode"
 
 /**
  * Marlin Mode Type
@@ -749,7 +749,7 @@
  *   Unit: [feedrate in mm/min]
  *   Value range: [min: 10, max: 12000]
  */
-#define LEVELING_EDGE_DISTANCE    40  // (mm) Inset distance from bed's edge for calculating leveling point location (Default: 20)
+#define LEVELING_EDGE_DISTANCE    35  // (mm) Inset distance from bed's edge for calculating leveling point location (Default: 20)
 #define LEVELING_Z_POS          0.2f  // (mm) Z-axis position when nozzle stays for leveling (Default: 0.2f)
 #define LEVELING_Z_RAISE       10.0f  // (mm) Z-axis position when nozzle move to next point (Default: 10.0f)
 #define LEVELING_XY_FEEDRATE    6000  // (mm/min) X and Y axes move feedrate (Default: 6000)
@@ -836,7 +836,7 @@
  */
 #define PREHEAT_LABELS {"PLA", "PETG", "ABS", "WOOD", "TPU", "NYLON"}  // Default: {"PLA", "PETG", "ABS", "WOOD", "TPU", "NYLON"}
 #define PREHEAT_HOTEND {200,   240,    230,   170,    220,   250}      // Default: {200,   240,    230,   170,    220,   250}
-#define PREHEAT_BED    { 70,    70,     90,    50,     50,    90}      // Default: { 60,    70,     90,    50,     50,    90}
+#define PREHEAT_BED    { 60,    70,     90,    50,     50,    90}      // Default: { 60,    70,     90,    50,     50,    90}
 
 //================================================================================
 //============================ Power Supply Settings =============================
@@ -850,7 +850,7 @@
  * The power supply uses the opposite of this logic to stay OFF.
  *   Options: [disable: 0, enable: 1]
  */
-#define PS_ACTIVE_HIGH 0  // Default: 1
+#define PS_ACTIVE_HIGH 1  // Default: 1
 
 /**
  * Power Supply Auto Shutdown Mode
@@ -1240,7 +1240,7 @@
 //================================================================================
 
 // PID autotune
-#define PID_CMD_MARLIN      {"M303 E0 S200 C10 U1", "M303 E1 C8 U1", "M303 E2 C8 U1", "M303 E3 C8 U1", "M303 E4 C8 U1", "M303 E5 C8 U1", "M303 E-1 C10 U1", ""}
+#define PID_CMD_MARLIN      {"M303 E0 C8 U1", "M303 E1 C8 U1", "M303 E2 C8 U1", "M303 E3 C8 U1", "M303 E4 C8 U1", "M303 E5 C8 U1", "M303 E-1 C8 U1", ""}
 #define PID_CMD_RRF         {"M303 T0",       "M303 T1",       "M303 T2",       "M303 T3",       "M303 T4",       "M303 T5",       "M303 H0",        ""}
 #define PID_PROCESS_TIMEOUT (15 * 60000)  // Timeout in MilliSeconds (1 minute = 60000 MilliSeconds). Default: 15 * 60000
 
