@@ -97,7 +97,7 @@
  *
  *   Options: [disable: 0, enable: 1]
  */
-#define ADVANCED_OK 0  // Default: 0
+#define ADVANCED_OK 1  // Default: 0
 
 /**
  * TX Slots
@@ -478,7 +478,7 @@
  * Banner text displayed at the top of the TFT in Marlin Mode.
  *   Value range: [min: 3, max: 20 characters]
  */
-#define MARLIN_TITLE "Marlin Mode"  // Default: "Marlin Mode"
+#define MARLIN_TITLE "Marlin Mode - Ender 3"  // Default: "Marlin Mode"
 
 /**
  * Marlin Mode Type
@@ -586,9 +586,9 @@
 #define X_MIN_POS   0  // Default: 0
 #define Y_MIN_POS   0  // Default: 0
 #define Z_MIN_POS   0  // Default: 0
-#define X_MAX_POS 300  // Default: 235
-#define Y_MAX_POS 300  // Default: 235
-#define Z_MAX_POS 340  // Default: 250
+#define X_MAX_POS 235  // Default: 235
+#define Y_MAX_POS 235  // Default: 235
+#define Z_MAX_POS 250  // Default: 250
 
 /**
  * X & Y Move Speeds/Feedrates
@@ -634,7 +634,7 @@
  *
  *   Options: [disable: 0, enable: 1]
  */
-#define AUTO_LOAD_LEVELING 0  // Default: 0
+#define AUTO_LOAD_LEVELING 1  // Default: 0
 
 /**
  * Onboard / Printer Media
@@ -850,7 +850,7 @@
  * The power supply uses the opposite of this logic to stay OFF.
  *   Options: [disable: 0, enable: 1]
  */
-#define PS_ACTIVE_HIGH 1  // Default: 1
+#define PS_ACTIVE_HIGH 0  // Default: 1
 
 /**
  * Power Supply Auto Shutdown Mode
@@ -892,7 +892,7 @@
  *
  *   Options: [Normal Disabled: 0, Normal Enabled: 1, Smart Disabled: 2, Smart Enabled: 3]
  */
-#define FIL_RUNOUT 1  // Default: 0
+#define FIL_RUNOUT 0  // Default: 0
 
 /**
  * Inverted Filament Runout Sensor Logic
